@@ -4,11 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <array>
-
-struct Position {
-    int x;
-    int y;
-};
+#include "Position.h"
 
 class Manager;
 class Monster;
@@ -37,8 +33,8 @@ public:
     int getDistance() const;
 
     void setPosition(Position value);
-    void setX(int x);
-    void setY(int y);
+    //void setX(int x);
+    //void setY(int y);
     void setHealth(int value);
     void setDamage(int value);
     void setProtection(int value);
@@ -61,7 +57,7 @@ public:
 
     void increaseDistance(int amount);
     void restoreHealth();
-    int move(int pos_X, int pos_Y, Field* gameField);
+    int move(Position newCoordinates, Field* gameField);
     void attack(Monster& target, Field* gameField);
 
     void diceResults();
@@ -77,8 +73,6 @@ public:
     using Character::Character;
     Monster() noexcept;
 
-    void setActive(bool active);
-    bool isActive() const;
     using Character::getHealth;
     using Character::getDamage;
     using Character::setHealth;

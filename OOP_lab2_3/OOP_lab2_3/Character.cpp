@@ -2,6 +2,7 @@
 #include "Manager.h"
 #include "cstdlib"
 #include "Field.h"
+#include "Position.h"
 #include <array>
 
 //Character
@@ -26,8 +27,8 @@ void Character::setPosition(Position value) {
     char_position.y = value.y;
 }
 //Clean up when fix the monster
-void Character::setX(int x) { char_position.x = x; }
-void Character::setY(int y) { char_position.y = y; }
+//void Character::setX(int x) { char_position.x = x; }
+//void Character::setY(int y) { char_position.y = y; }
 
 void Character::setHealth(int value) { health = value; }
 void Character::setDamage(int value) { damage = value; }
@@ -46,10 +47,10 @@ void Character::increaseProtection(int amount) { setProtection(getProtection() +
 
 //Hero
 
-Hero::Hero() : Character() {
+Hero::Hero() noexcept : Character() {
     setDistance(1);
     setSpeed(1);
-    setHealth(maxHP);
+    setHealth(10);
     setProtection(1);
     setDamage(1);
 }
@@ -63,10 +64,10 @@ void Hero::diceResults() {
     setProtection(getProtection() + (rand() % 6 + 1));
 }
 
-int Hero::move(int new_x, int new_y, Field* gameField) {
-    if (gameField->freeCell(new_x, new_y)) {
-        int deltaX = std::abs(new_x - getPosition().x);
-        int deltaY = std::abs(new_y - getPosition().y);
+int Hero::move(Position newCoordinates, Field* gameField) {
+    if (gameField->freeCell(newCoordinates)) {
+        int deltaX = std::abs(newCoordinates.x - getPosition().x);
+        int deltaY = std::abs(newCoordinates.y - getPosition().y);
 
         int moveCost = 0;
         if (deltaX == deltaY) { // diagonal
@@ -83,10 +84,10 @@ int Hero::move(int new_x, int new_y, Field* gameField) {
 
         int curSpeed = getSpeed();
         if (curSpeed >= moveCost) {
-            gameField->eraseContent(getPosition().x, getPosition().y); // erased the cell
-            setX(new_x); // set new position
-            setY(new_y);
-            gameField->moveHero(new_x, new_y); // updated the field
+            gameField->eraseContent(getPosition()); // erased the cell
+            
+            setPosition(newCoordinates);
+            gameField->moveHero(newCoordinates); // updated the field
 
             curSpeed -= moveCost;
         }
@@ -127,8 +128,7 @@ void Hero::attack(Monster& target, Field* gameField) {
 
             if (target.getHealth() <= 0) {
                 target.setHealth(0);
-                gameField->eraseContent(target.getPosition().x, target.getPosition().y); // erased the cell
-                target.setActive(false);
+                gameField->eraseContent(target.getPosition()); // erased the cell
             }
         }
     }
@@ -140,18 +140,12 @@ void Hero::restoreHealth() { setHealth(maxHP); }
 
 //Monster
 
-bool Monster::isActive() const { return active; }
-void Monster::setActive(bool active) { this->active = active; }
-
 Monster::Monster() noexcept {
     Manager main;
     setSpeed(6);
     setProtection(1);
     setDamage(7);
     setHealth(12);
-    setX(0);
-    setY(0);
-    setActive(true);
 }
 
 using MonsterContainer = std::array<Monster, 1>;
@@ -161,7 +155,7 @@ void Monster::calculateMonsterAttack(Hero& hero, MonsterContainer& monsters) {
         int monsterDistance = std::max(std::abs(hero.getPosition().x - monster.getPosition().x), std::abs(hero.getPosition().y - monster.getPosition().y));
 
         int totalAttack;
-        if (monster.isActive()) {
+        if (monster.getHealth()>0) {
             if (monsterDistance <= hero.getDistance()) {
                 totalAttack = monster.getDamage();
             }

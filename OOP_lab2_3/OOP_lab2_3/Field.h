@@ -3,20 +3,13 @@
 #include "Cell.h"
 #include <vector>
 
-struct Position {
-    int x;
-    int y;
 
-    Position(int valueX, int valueY);
-
-    Position();
-};
 
 class Field {
 private:
     int width;
     int height;
-    bool isCellFreeAroundHero(int heroX, int heroY) const;
+    bool isCellFreeAroundHero(Position unutPosition) const;
     //friend void PrintField(Field*);
 
 public:
@@ -27,18 +20,16 @@ public:
     Field(int m, int n);
     Field(const Field& other);
     Field& operator=(const Field& other);
-    bool isWithinBounds(int x, int y) const;
+    bool isWithinBounds(Position value) const;
     void placeHero();
     void placeMonsters(int monsterCount);
     void placeObstacles(int obstacleCount);
-    bool freeCell(int x, int y) const;
-    // Copy Constructor
-    //Field(const Field& other);
+    bool freeCell(Position newXY) const;
     ~Field();
 
     void moveUnit(Character& unit, Position newPosition);
 
-    void eraseContent(int x, int y);
+    void eraseContent(Position cell);
 
-    void moveHero(int x, int y);
+    void moveHero(Position moving);
 };

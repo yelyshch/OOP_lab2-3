@@ -1,6 +1,5 @@
 #include "Manager.h"
 #include "Character.h"
-#include "Position.h"
 #include <iostream>
 
 using namespace std;

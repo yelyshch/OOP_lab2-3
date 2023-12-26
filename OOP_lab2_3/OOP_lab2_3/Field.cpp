@@ -1,13 +1,7 @@
 #include "Field.h"
+#include "Position.h"
 #include <cstdlib> // for rand()
 #include <vector>
-
-Position::Position(int valueX, int valueY)
-{
-    x = valueX;
-    y = valueY;
-}
-Position::Position() {}
 
 Field::Field(int n, int m) : width(n), height(m), cells(height, std::vector<Cell>(width, Cell()))
 {
@@ -44,25 +38,27 @@ Field& Field::operator=(const Field& other)
 }
 
 //Переробити для юнітів, а не тільки героя
-bool Field::isCellFreeAroundHero(int heroX, int heroY) const {
+bool Field::isCellFreeAroundHero(Position unutPosition) const {
     for (int dx = -1; dx <= 1; ++dx) {
         for (int dy = -1; dy <= 1; ++dy) {
-            int x = heroX + dx;
-            int y = heroY + dy;
+            Position value;
+            value.x = unutPosition.x + dx;
+            value.y = unutPosition.y + dy;
 
-            if (isWithinBounds(x, y) && (cells[y][x].hasObstacle() || cells[y][x].hasUnitPresent()))
+            if (isWithinBounds(value) && (cells[value.y][value.x].hasObstacle() || cells[value.y][value.x].hasUnitPresent()))
                 return false;
         }
     }
     return true;
 }
 
-bool Field::freeCell(int x, int y) const {
-    return isWithinBounds(x, y) && !cells[y][x].hasObstacle() && !cells[y][x].hasUnitPresent();
+bool Field::freeCell(Position newXY) const {
+    return isWithinBounds(newXY) && !cells[newXY.y][newXY.x].hasObstacle() && !cells[newXY.y][newXY.x].hasUnitPresent();
 }
 
 void Field::placeHero() {
-    Position value(width / 2, 0);
+    Position value; 
+    value.setCoordinates(width / 2, 0);
     hero->setPosition(value);
     moveUnit(*hero, value);
     cells[value.y][value.x].setUnitPresent(true);
@@ -70,13 +66,12 @@ void Field::placeHero() {
 
 void Field::placeObstacles(int obstacleCount) {
     for (int i = 0; i < obstacleCount; ++i) {
-        int x, y;
+        Position value;
         do {
-            x = rand() % width;
-            y = rand() % height;
-        } while (!isCellFreeAroundHero(x, y));
-
-        cells[y][x].setObstacle(true);
+            value.x = rand() % width;
+            value.y = rand() % height;
+        } while (!isCellFreeAroundHero(value));
+        cells[value.y][value.x].setObstacle(true);
     }
 }
 
@@ -86,29 +81,27 @@ void Field::placeMonsters(int monsterCount) {
         do {
             position.x = rand() % width;
             position.y = rand() % height;
-        } while (!isCellFreeAroundHero(position.x, position.y));
+        } while (!isCellFreeAroundHero(position));
 
-        //Після вирішення проблем з конструктором Character повернутися
-        monster->setX(position.x);
-        monster->setY(position.y);
+        monster->setPosition(position);
         cells[position.y][position.x].setUnitPresent(true);
     }
 }
 
-bool Field::isWithinBounds(int x, int y) const {
-    return x >= 0 && x < width && y >= 0 && y < height;
+bool Field::isWithinBounds(Position value) const {
+    return value.x >= 0 && value.x < width && value.y >= 0 && value.y < height;
 }
 
-void Field::eraseContent(int x, int y) {
-    if (isWithinBounds(x, y)) {
-        cells[y][x].setUnitPresent(false);
-        cells[y][x].setObstacle(false);
+void Field::eraseContent(Position cell) {
+    if (isWithinBounds(cell)) {
+        cells[cell.y][cell.x].setUnitPresent(false);
+        cells[cell.y][cell.x].setObstacle(false);
     }
 }
 
-void Field::moveHero(int x, int y) {
-    if (isWithinBounds(x, y)) {
-        cells[y][x].setUnitPresent(true);
+void Field::moveHero(Position moving) {
+    if (isWithinBounds(moving)) {
+        cells[moving.y][moving.x].setUnitPresent(true);
     }
 }
 
