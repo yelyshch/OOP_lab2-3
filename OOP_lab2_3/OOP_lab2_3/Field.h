@@ -2,8 +2,7 @@
 #include "Character.h"
 #include "Cell.h"
 #include <vector>
-
-
+#include "Hero.h"
 
 class Field {
 private:

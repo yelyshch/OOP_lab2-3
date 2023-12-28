@@ -1,7 +1,8 @@
 #include "Field.h"
 #include "Position.h"
+#include "Monster.h"
+#include "Hero.h"
 #include <cstdlib> // for rand()
-#include <vector>
 
 Field::Field(int n, int m) : width(n), height(m), cells(height, std::vector<Cell>(width, Cell()))
 {
@@ -37,7 +38,6 @@ Field& Field::operator=(const Field& other)
     return *this;
 }
 
-//Переробити для юнітів, а не тільки героя
 bool Field::isCellFreeAroundHero(Position unutPosition) const {
     for (int dx = -1; dx <= 1; ++dx) {
         for (int dy = -1; dy <= 1; ++dy) {

@@ -1,13 +1,10 @@
 #pragma once
-
 #include "Field.h"
 #include "Character.h"
 
 class Manager {
 private:
     std::string PersoneName;
-
-
 public:
     int CurrentLevel;
     //friend void TestLab1(Manager);
