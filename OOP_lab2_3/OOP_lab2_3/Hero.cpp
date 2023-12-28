@@ -80,3 +80,4 @@ void Hero::attack(Monster& target, Field* gameField) {
 }
 
 void Hero::restoreHealth() { setHealth(maxHP); }
+Hero::~Hero() {}

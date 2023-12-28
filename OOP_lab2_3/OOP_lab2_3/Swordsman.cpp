@@ -88,3 +88,5 @@ void Swordsman::attack(Monster& target, Field* gameField) {
     // Increment the attack counter
     attackCounter = (attackCounter + 1) % 5;
 }
+
+Swordsman::~Swordsman() {};

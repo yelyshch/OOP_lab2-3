@@ -7,6 +7,7 @@ private:
 
 public:
 	Swordsman() noexcept;
+	~Swordsman();
 	int move(Position newCoordinates, Field* gameField) override;
-	void attack(Monster& target, Field* gameField);
+	void attack(Monster& target, Field* gameField) override;
 }; 

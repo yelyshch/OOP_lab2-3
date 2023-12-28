@@ -56,3 +56,4 @@ void Archer::attack(Monster& target, Field* gameField) {
         gameField->eraseContent(target.getPosition()); // Erase the cell
     }
 }
+Archer::~Archer() {}

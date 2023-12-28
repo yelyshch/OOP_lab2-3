@@ -1,5 +1,6 @@
 #include "Hero.h"
 #include "Monster.h"
+#include <cmath>
 
 Monster::Monster() noexcept : Character() {
     setProtection(1);
