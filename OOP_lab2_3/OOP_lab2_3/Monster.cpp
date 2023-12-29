@@ -1,11 +1,37 @@
 #include "Hero.h"
 #include "Monster.h"
+#include "State.h"
 #include <cmath>
 
 Monster::Monster() noexcept : Character() {
     setProtection(1);
     setDamage(1);
     setHealth(3);
+    state = nullptr;
+}
+
+Monster::Monster(State* st) : Character() {
+    setMonsterState(st);
+}
+
+State* Monster::getMonsterState() { return state; }
+
+void Monster::setMonsterState(State* newState) {
+    if (state != nullptr) delete state;
+    state = newState;
+    state->setStateForMonster(this);
+}
+
+void Monster::nextState() {
+    state->nextState();
+}
+
+void Monster::previousState() {
+    state->previousState();
+}
+
+void Monster::moveTowardsHero(Hero& hero) {
+
 }
 
 void Monster::calculateMonsterAttack(Hero& hero, MonsterContainer& monsters) {

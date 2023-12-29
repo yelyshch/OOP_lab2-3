@@ -9,6 +9,7 @@ private:
     int width;
     int height;
     bool isCellFreeAroundHero(Position unutPosition) const;
+
     //friend void PrintField(Field*);
 
 public:
@@ -16,9 +17,7 @@ public:
     std::vector<std::vector<int>> cell;
     Hero* hero;
     Monster* monster;
-    Field(int m, int n);
-    Field(const Field& other);
-    Field& operator=(const Field& other);
+    Field(int n, int m, HeroType heroType);
     bool isWithinBounds(Position value) const;
     void placeHero();
     void placeMonsters(int monsterCount);

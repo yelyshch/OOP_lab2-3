@@ -15,3 +15,8 @@ public:
 public:
     const int maxHP = 10; // Assuming maxHP is a constant for Hero
 };
+
+enum class HeroType {
+    Archer,
+    Swordsman
+};

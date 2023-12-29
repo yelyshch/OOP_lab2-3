@@ -2,40 +2,21 @@
 #include "Position.h"
 #include "Monster.h"
 #include "Hero.h"
+#include "Archer.h"
+#include "Swordsman.h"
 #include <cstdlib> // for rand()
 
-Field::Field(int n, int m) : width(n), height(m), cells(height, std::vector<Cell>(width, Cell()))
+Field::Field(int n, int m, HeroType heroType) : width(n), height(m), cells(height, std::vector<Cell>(width, Cell()))
 {
-    hero = new Hero();
-    monster = new Monster;
-}
-
-// Copy constructor
-Field::Field(const Field& other)
-    : width(other.width), height(other.height), cells(other.cells)
-{
-    // Create new instances for the hero and monster, copying their states
-    hero = new Hero(*other.hero);
-    monster = new Monster(*other.monster);
-}
-
-// Copy assignment operator
-Field& Field::operator=(const Field& other)
-{
-    if (this != &other) {
-        // Copy the basic properties
-        width = other.width;
-        height = other.height;
-        cells = other.cells;
-
-        delete hero;
-        delete monster;
-
-        // Create new
-        hero = new Hero(*other.hero);
-        monster = new Monster(*other.monster);
+    switch (heroType) {
+    case HeroType::Archer:
+        hero = new Archer();
+        break;
+    case HeroType::Swordsman:
+        hero = new Swordsman();
+        break;
     }
-    return *this;
+    monster = new Monster;
 }
 
 bool Field::isCellFreeAroundHero(Position unutPosition) const {
