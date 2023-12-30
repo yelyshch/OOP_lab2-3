@@ -4,3 +4,5 @@
 void State::setStateForMonster(Monster* value) {
 	monster = value;
 }
+
+State::~State() {}

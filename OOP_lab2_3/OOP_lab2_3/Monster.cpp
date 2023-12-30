@@ -8,6 +8,7 @@ Monster::Monster() noexcept : Character() {
     setDamage(1);
     setHealth(3);
     state = nullptr;
+    counterMovesUntilDamage = 0;
 }
 
 Monster::Monster(State* st) : Character() {

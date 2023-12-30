@@ -23,4 +23,5 @@ public:
     void calculateMonsterAttack(Hero& hero, MonsterContainer& monsters);
 private:
     State* state;
+    int counterMovesUntilDamage;
 };
