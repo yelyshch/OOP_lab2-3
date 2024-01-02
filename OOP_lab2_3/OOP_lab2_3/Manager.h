@@ -16,7 +16,6 @@ public:
 
     void generationObjects(int obst) const;
     int getCurrentLevel() const;
-    void createFieldcreateField(int fieldWidth, int fieldHeight, int obstacles, int monster, HeroType typeHero);
     Manager();
     ~Manager();
 };

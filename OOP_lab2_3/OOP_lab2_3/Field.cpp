@@ -26,7 +26,7 @@ bool Field::isCellFreeAroundHero(Position unutPosition) const {
             value.x = unutPosition.x + dx;
             value.y = unutPosition.y + dy;
 
-            if (isWithinBounds(value) && (cells[value.y][value.x].hasObstacle() || cells[value.y][value.x].hasUnitPresent()))
+            if (isWithinBounds(value) && (cells[value.y][value.x].hasObstacle() || cells[value.x][value.y].hasUnitPresent()))
                 return false;
         }
     }
@@ -34,7 +34,7 @@ bool Field::isCellFreeAroundHero(Position unutPosition) const {
 }
 
 bool Field::freeCell(Position newXY) const {
-    return isWithinBounds(newXY) && !cells[newXY.y][newXY.x].hasObstacle() && !cells[newXY.y][newXY.x].hasUnitPresent();
+    return isWithinBounds(newXY) && !cells[newXY.x][newXY.y].hasObstacle() && !cells[newXY.x][newXY.y].hasUnitPresent();
 }
 
 void Field::placeHero() {
@@ -42,7 +42,7 @@ void Field::placeHero() {
     value.setCoordinates(width / 2, 0);
     hero->setPosition(value);
     moveUnit(*hero, value);
-    cells[value.y][value.x].setUnitPresent(true);
+    cells[value.x][value.y].setUnitPresent(true);
 }
 
 void Field::placeObstacles(int obstacleCount) {
