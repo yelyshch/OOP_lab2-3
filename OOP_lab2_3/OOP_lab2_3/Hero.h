@@ -11,6 +11,7 @@ public:
     virtual int move(Position newCoordinates, Field* gameField) = 0;
     virtual void attack(Monster& target, Field* gameField) = 0;
     void restoreHealth();
+    void diceResults();
     virtual ~Hero();
 public:
     const int maxHP = 10; // Assuming maxHP is a constant for Hero

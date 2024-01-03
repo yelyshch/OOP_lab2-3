@@ -45,5 +45,5 @@ public:
     void increaseProtection(int amount);
     void reduceHealth(int amount);
 
-    void diceResults();
+    virtual void diceResults();
 };

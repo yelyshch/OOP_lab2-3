@@ -23,6 +23,7 @@ public:
     //using MonsterContainer = std::vector<Monster>;
 
     void calculateMonsterAttack(Hero& hero, Monster& monster);
+    void diceResults();
 private:
     State* state;
     int attackCounter;

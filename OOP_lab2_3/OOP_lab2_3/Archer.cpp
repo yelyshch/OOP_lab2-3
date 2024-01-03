@@ -5,7 +5,7 @@
 Archer::Archer() noexcept : Hero() {
     setProtection(1);
     setDamage(1);
-    setDistance(4);
+    setDistance(3);
     setSpeed(3);
 }
 
@@ -56,4 +56,5 @@ void Archer::attack(Monster& target, Field* gameField) {
         gameField->eraseContent(target.getPosition()); // Erase the cell
     }
 }
+
 Archer::~Archer() {}

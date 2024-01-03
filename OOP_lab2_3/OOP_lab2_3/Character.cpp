@@ -43,8 +43,4 @@ void Character::reduceHealth(int amount) {
 void Character::increaseDamage(int amount) { setDamage(getDamage() + amount); }
 void Character::increaseProtection(int amount) { setProtection(getProtection() + amount); }
 
-void Character::diceResults() {
-    setSpeed(getSpeed() + (rand() % 6 + 1));
-    setDamage(getDamage() + (rand() % 6 + 1));
-    setProtection(getProtection() + (rand() % 6 + 1));
-}
+void Character::diceResults() {}

@@ -20,16 +20,13 @@ Monster::Monster(State* st) : state(nullptr) {
 
 State* Monster::getMonsterState() { return state; }
 int Monster::getAttackCounter() { return attackCounter; }
+
 void Monster::getAttackCounter(int value) { attackCounter = value; }
-
-
 void Monster::setMonsterState(State* newState) {
     if (state != nullptr) delete state;
     state = newState;
     state->setStateForMonster(this);
 }
-
-//додати до некст та превьюс у сигнатуру лічильник атаки та передавати його у класи станів, щоб вони самі переводилися в інші стани
 
 void Monster::nextState() {
     state->nextState();
@@ -82,4 +79,9 @@ void Monster::calculateMonsterAttack(Hero& hero, Monster& monster) {
     }
 
     hero.reduceHealth(damage);
+}
+
+void Monster::diceResults() {
+    setDamage(getDamage() + (rand() % 6 + 1));
+    setProtection(getProtection() + (rand() % 6 + 1));
 }
