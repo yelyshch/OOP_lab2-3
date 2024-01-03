@@ -1,7 +1,9 @@
 #include "NormalMoveMonster.h"
+#include "FastMoveMonster.h"
 #include "SlowMoveMonster.h"
 #include "Field.h"
 #include "Position.h"
+#include <cmath>
 
 void NormalMoveMonster::nextState() {
     monster->setMonsterState(new FastMoveMonster());
@@ -21,7 +23,8 @@ void NormalMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gam
         Position value;
 
         // Діагональний рух, пріоритетний
-        if ((deltaX >= 2 || deltaX <= -2) && (deltaY >= 2 || deltaY <= -2)) {
+        
+        if (std::abs(deltaX) >= 2 && std::abs(deltaY) >= 2) {
             value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0),
                                  monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
         }

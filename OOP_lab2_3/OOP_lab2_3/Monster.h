@@ -16,12 +16,14 @@ public:
     void nextState();
     void previousState();
 
-    void moveTowardsHero(Hero& hero);
+    void activityInGame(Monster& monster, Hero& hero, Field* gameField);
+
+    //void moveTowardsHero(Hero& hero);
 
     using MonsterContainer = std::vector<Monster>;
 
-    void calculateMonsterAttack(Hero& hero, MonsterContainer& monsters);
+    void calculateMonsterAttack(Hero& hero, Monster& monster);
 private:
     State* state;
-    int counterMovesUntilDamage;
+    int attackCounter;
 };

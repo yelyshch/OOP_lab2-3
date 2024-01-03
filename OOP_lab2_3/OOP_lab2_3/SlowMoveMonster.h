@@ -6,6 +6,6 @@
 
 class SlowMoveMonster: public State {
 public:
-    void nextState() override;
+    void nextState();
     void moveTowardsHero(Monster& monster, Hero& hero, Field* gameField);
 };
