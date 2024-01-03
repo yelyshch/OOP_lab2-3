@@ -12,15 +12,15 @@ public:
     Monster() noexcept;
     Monster(State* st);
     State* getMonsterState();
+    int getAttackCounter();
+    void getAttackCounter(int value);
     void setMonsterState(State* newState);
     void nextState();
     void previousState();
 
     void activityInGame(Monster& monster, Hero& hero, Field* gameField);
 
-    //void moveTowardsHero(Hero& hero);
-
-    using MonsterContainer = std::vector<Monster>;
+    //using MonsterContainer = std::vector<Monster>;
 
     void calculateMonsterAttack(Hero& hero, Monster& monster);
 private:

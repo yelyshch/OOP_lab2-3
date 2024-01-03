@@ -9,4 +9,6 @@ public:
 	void setStateForMonster(Monster* value);
 	virtual void nextState();
 	virtual void previousState();
+	//virtual void moveTowardsHero(Monster& monster, Hero& hero, Field* gameField);
+	virtual void stateDetermination(int counter, Monster& monster, Hero& hero, Field* gameField);
 };

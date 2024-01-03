@@ -19,12 +19,17 @@ Monster::Monster(State* st) : state(nullptr) {
 }
 
 State* Monster::getMonsterState() { return state; }
+int Monster::getAttackCounter() { return attackCounter; }
+void Monster::getAttackCounter(int value) { attackCounter = value; }
+
 
 void Monster::setMonsterState(State* newState) {
     if (state != nullptr) delete state;
     state = newState;
     state->setStateForMonster(this);
 }
+
+//додати до некст та превьюс у сигнатуру лічильник атаки та передавати його у класи станів, щоб вони самі переводилися в інші стани
 
 void Monster::nextState() {
     state->nextState();
@@ -39,35 +44,13 @@ void Monster::activityInGame(Monster& monster, Hero& hero, Field* gameField) {
     int deltaX = monster.getPosition().x - hero.getPosition().x;
     int deltaY = monster.getPosition().y - hero.getPosition().y;
 
-    Monster* monsterState = new Monster(new SlowMoveMonster());
+    Monster* monsterState = &monster;
+    monsterState = new Monster(new SlowMoveMonster());
 
     if (std::abs(deltaX) <= 1 && std::abs(deltaY) <= 1) { monster.calculateMonsterAttack(hero, monster); }
     else {
-        if (state == SlowMoveMonster() && attackCounter = 3) {
-            monster.nextState();
-        }
-        else if (state == NormalMoveMonster() && attackCounter = 6) {
-            monster.nextState();
-        }
-        else if (state == FastMoveMonster() && attackCounter = 5) {
-            monster.previousState();
-        }
-        else if (state == NormalMoveMonster() && attackCounter = 2) {
-            monster.previousState();
-        }
-
-        if (state == SlowMoveMonster()) {
-            SlowMoveMonster currentState;
-            currentState.moveTowardsHero(monster, hero, gameField);
-        }
-        else if (state == NormalMoveMonster()) {
-            NormalMoveMonster currentState;
-            currentState.moveTowardsHero(monster, hero, gameField);
-        }
-        else {
-            FastMoveMonster currentState;
-            currentState.moveTowardsHero(monster, hero, gameField);
-        }
+        state->stateDetermination(attackCounter, monster, hero, gameField);
+        attackCounter++;
     }
 }
 

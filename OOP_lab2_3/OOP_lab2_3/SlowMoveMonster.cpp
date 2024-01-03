@@ -5,6 +5,15 @@
 #include "NormalMoveMonster.h"
 #include <cmath>
 
+void SlowMoveMonster::stateDetermination(int counter, Monster& monster, Hero& hero, Field* gameField) {
+    if (counter > 2) { 
+        NormalMoveMonster nextstate;
+        nextstate.stateDetermination(counter, monster, hero, gameField);
+        nextState(); 
+    }
+    else { moveTowardsHero(monster, hero, gameField); }
+}
+
 void SlowMoveMonster::nextState() {
     monster->setMonsterState(new NormalMoveMonster());
 }

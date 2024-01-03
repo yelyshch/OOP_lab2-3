@@ -5,6 +5,22 @@
 #include "Position.h"
 #include <cmath>
 
+void NormalMoveMonster::stateDetermination(int counter, Monster& monster, Hero& hero, Field* gameField) {
+    if (counter < 3)
+    {
+        SlowMoveMonster nextstate;
+        nextstate.stateDetermination(counter, monster, hero, gameField);
+        previousState();
+    }
+    else if (counter > 6)
+    {
+        FastMoveMonster nextstate;
+        nextstate.stateDetermination(counter, monster, hero, gameField);
+        nextState();
+    }
+    else { moveTowardsHero(monster, hero, gameField); }
+}
+
 void NormalMoveMonster::nextState() {
     monster->setMonsterState(new FastMoveMonster());
 }
