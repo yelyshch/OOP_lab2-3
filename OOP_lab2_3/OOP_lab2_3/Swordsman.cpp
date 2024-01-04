@@ -9,7 +9,7 @@ Swordsman::Swordsman() noexcept : Hero() {
     setSpeed(1);
 }
 
-int Swordsman::move(Position newCoordinates, Field* gameField) {
+void Swordsman::move(Position newCoordinates, Field* gameField) {
     if (gameField->freeCell(newCoordinates)) {
         int deltaX = std::abs(newCoordinates.x - getPosition().x);
         int deltaY = std::abs(newCoordinates.y - getPosition().y);
@@ -31,13 +31,13 @@ int Swordsman::move(Position newCoordinates, Field* gameField) {
 
             curSpeed -= moveCost;
         }
-        return moveCost;
+        setSpeed(getSpeed() - moveCost);
     }
-    return 1;
+    setSpeed(getSpeed());
 }
 
 void Swordsman::attack(Monster& target, Field* gameField) {
-    int damage = std::abs(2 * getDamage() - target.getProtection());
+    int damage = std::abs(getDamage() - (target.getProtection()/2));
     int additionalDamage = 0;
 
     // Counter for the number of attacks made in the round

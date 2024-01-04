@@ -28,15 +28,9 @@ void SlowMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
     while (!moveIsMade) {
         Position value;
 
-        //’одимо по X
-        value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0), monster.getPosition().y);
-
-        if (gameField->freeCell(value)) {
-            gameField->eraseContent(monster.getPosition()); // erase the cell
-            monster.setPosition(value);
-            
-            gameField->moveHero(value);
-            moveIsMade = true;
+        if (deltaX != 0) {
+            //’одимо по X
+            value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0), monster.getPosition().y);
         }
         else if (deltaY != 0) {
             // якщо рух по X неможливий, але можна по Y
@@ -49,5 +43,13 @@ void SlowMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
                 moveIsMade = true;
             }
         }
+        if (gameField->freeCell(value)) {
+            gameField->eraseContent(monster.getPosition()); // erase the cell
+            monster.setPosition(value);
+
+            gameField->moveHero(value);
+            moveIsMade = true;
+        }
+
     }
 }

@@ -9,7 +9,7 @@ Archer::Archer() noexcept : Hero() {
     setSpeed(3);
 }
 
-int Archer::move(Position newCoordinates, Field* gameField){
+void Archer::move(Position newCoordinates, Field* gameField){
     if (gameField->freeCell(newCoordinates)) {
         int deltaX = std::abs(newCoordinates.x - getPosition().x);
         int deltaY = std::abs(newCoordinates.y - getPosition().y);
@@ -31,9 +31,9 @@ int Archer::move(Position newCoordinates, Field* gameField){
 
             curSpeed -= moveCost;
         }
-        return moveCost;
+        setSpeed(getSpeed() - moveCost);
     }
-    return 1;
+    setSpeed(getSpeed());
 }
 
 void Archer::attack(Monster& target, Field* gameField) {
@@ -50,10 +50,9 @@ void Archer::attack(Monster& target, Field* gameField) {
     // Apply damage to the monster
     target.setHealth(std::max(0, target.getHealth() - totalDamage));
 
-    // Check if the monster is defeated
     if (target.getHealth() <= 0) {
         target.setHealth(0);
-        gameField->eraseContent(target.getPosition()); // Erase the cell
+        gameField->eraseContent(target.getPosition());
     }
 }
 

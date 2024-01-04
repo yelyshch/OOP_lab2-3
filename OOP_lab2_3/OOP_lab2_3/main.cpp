@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <iomanip>
 #include <vector>
+#include <cmath>
 #include "Manager.h"
 
 using std::string;
@@ -12,7 +13,7 @@ using std::cin;
 using std::endl;
 using std::setw;
 
-const int FIELD_SIZE = 7;
+const int FIELD_SIZE = 5;
 
 void PrintField(Field* field) {
     for (int i = 0; i < FIELD_SIZE; i++) {
@@ -74,13 +75,14 @@ void TestGame(Manager mainManager) {
     displayMonster("Monster status after dice results", mainManager.gameField->monster);
     cout << endl;
 
-
+    bool end = false;
     //Round Phase:
-    while (mainManager.gameField->monster->getHealth() > 0 || mainManager.gameField->hero->getHealth() > 0) {
-        int deltaX = mainManager.gameField->hero->getPosition().x - mainManager.gameField->monster->getPosition().x;
-        int deltaY = mainManager.gameField->hero->getPosition().y - mainManager.gameField->monster->getPosition().y;
+    while (!end) {
+        
+        int deltaX = mainManager.gameField->monster->getPosition().x  - mainManager.gameField->hero->getPosition().x;
+        int deltaY = mainManager.gameField->monster->getPosition().y - mainManager.gameField->hero->getPosition().y;
 
-        if (deltaX >= mainManager.gameField->hero->getDistance() && deltaY >= mainManager.gameField->hero->getDistance()) {
+        if (mainManager.gameField->hero->getDistance() >= std::abs(deltaX) && mainManager.gameField->hero->getDistance() >= std::abs(deltaY)) {
             cout << "Enter the number to perform the desired action: 0 - attack, 1 - move, other - miss :";
             short int choice;
             cin >> choice;
@@ -122,14 +124,21 @@ void TestGame(Manager mainManager) {
             }
 
         }
-
-        cout << "Current level = " << mainManager.CurrentLevel << endl << endl;
         PrintField(mainManager.gameField);
 
         displayHero("\nHero status", mainManager.gameField->hero);
         displayMonster("Monster status", mainManager.gameField->monster);
 
         mainManager.gameField->monster->activityInGame(*mainManager.gameField->monster, *mainManager.gameField->hero, mainManager.gameField);
+
+        if (mainManager.gameField->monster->getHealth() == 0) {
+            cout << endl << "VICTORY!" << endl << "Game over";
+            end = true;
+        }
+        else if (mainManager.gameField->hero->getHealth() == 0) {
+            cout << "DEFEAT!" << endl << "Game over";
+            end = true;
+        }
     }
 }
 

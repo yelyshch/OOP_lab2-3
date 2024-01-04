@@ -1,3 +1,4 @@
+#include <iostream>
 #include "Hero.h"
 #include "Monster.h"
 #include "State.h"
@@ -9,8 +10,8 @@
 Monster::Monster() noexcept : Character() {
     setProtection(1);
     setDamage(1);
-    setHealth(3);
-    state = new SlowMoveMonster();
+    setHealth(7);
+    state = nullptr;
     attackCounter = 0;
 }
 
@@ -23,7 +24,7 @@ int Monster::getAttackCounter() { return attackCounter; }
 
 void Monster::getAttackCounter(int value) { attackCounter = value; }
 void Monster::setMonsterState(State* newState) {
-    if (state != nullptr) delete state;
+    if (state != nullptr) { delete state; }
     state = newState;
     state->setStateForMonster(this);
 }
@@ -41,13 +42,18 @@ void Monster::activityInGame(Monster& monster, Hero& hero, Field* gameField) {
     int deltaX = monster.getPosition().x - hero.getPosition().x;
     int deltaY = monster.getPosition().y - hero.getPosition().y;
 
-    Monster* monsterState = &monster;
-    monsterState = new Monster(new SlowMoveMonster());
-
-    if (std::abs(deltaX) <= 1 && std::abs(deltaY) <= 1) { monster.calculateMonsterAttack(hero, monster); }
-    else {
-        state->stateDetermination(attackCounter, monster, hero, gameField);
+    if (std::abs(deltaX) <= 1 && std::abs(deltaY) <= 1) { 
+        monster.calculateMonsterAttack(hero, monster);
+    }
+    else if (attackCounter == 0) {
+        state = new SlowMoveMonster();
         attackCounter++;
+        state->stateDetermination(attackCounter, monster, hero, gameField);
+    }
+    else {
+        attackCounter++;
+        state->stateDetermination(attackCounter, monster, hero, gameField);
+        std::cout << std::endl << "1" << std::endl;
     }
 }
 

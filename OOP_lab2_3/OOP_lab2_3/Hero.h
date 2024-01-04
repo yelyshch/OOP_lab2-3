@@ -5,12 +5,13 @@
 
 class Hero : public Character {
 public:
-    Hero() noexcept;
+    Hero();
 
     void increaseDistance(int amount);
-    virtual int move(Position newCoordinates, Field* gameField) = 0;
-    virtual void attack(Monster& target, Field* gameField) = 0;
+    virtual void move(Position newCoordinates, Field* gameField);
+    virtual void attack(Monster& target, Field* gameField);
     void restoreHealth();
+
     void diceResults();
     virtual ~Hero();
 public:
