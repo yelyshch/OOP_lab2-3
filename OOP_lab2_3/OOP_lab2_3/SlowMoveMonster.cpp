@@ -11,7 +11,7 @@ void SlowMoveMonster::stateDetermination(int counter, Monster& monster, Hero& he
         nextstate.stateDetermination(counter, monster, hero, gameField);
         nextState(); 
     }
-    else { moveTowardsHero(monster, hero, gameField); }
+    else if (counter < 2 && counter > 0) { moveTowardsHero(monster, hero, gameField); }
 }
 
 void SlowMoveMonster::nextState() {
@@ -32,14 +32,20 @@ void SlowMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
         value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0), monster.getPosition().y);
 
         if (gameField->freeCell(value)) {
-                monster.setPosition(value);
-                moveIsMade = true;
+            gameField->eraseContent(monster.getPosition()); // erase the cell
+            monster.setPosition(value);
+            
+            gameField->moveHero(value);
+            moveIsMade = true;
         }
         else if (deltaY != 0) {
             // якщо рух по X неможливий, але можна по Y
             value.setCoordinates(monster.getPosition().x, monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
             if (gameField->freeCell(value)) {
+                gameField->eraseContent(monster.getPosition()); // erase the cell
                 monster.setPosition(value);
+
+                gameField->moveHero(value);
                 moveIsMade = true;
             }
         }

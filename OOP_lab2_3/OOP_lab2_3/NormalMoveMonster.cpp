@@ -43,13 +43,24 @@ void NormalMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gam
         if (std::abs(deltaX) >= 2 && std::abs(deltaY) >= 2) {
             value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0),
                                  monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
+            if (gameField->freeCell(value)) {
+                gameField->eraseContent(monster.getPosition()); // erase the cell
+                monster.setPosition(value);
+
+                gameField->moveHero(value);
+                moveIsMade = true;
+            }
         }
         else {
             //Ходимо по X
             value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0), monster.getPosition().y);
 
             if (gameField->freeCell(value)) {
+                gameField->eraseContent(monster.getPosition()); // erase the cell
                 monster.setPosition(value);
+
+                gameField->moveHero(value);
+                moveIsMade = true;
             }
             else if (deltaY != 0) {
                 // Якщо рух по X неможливий, але можна по Y
@@ -61,9 +72,5 @@ void NormalMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gam
         }
 
         // Перевірка доступності нової позиції
-        if (gameField->freeCell(value)) {
-            monster.setPosition(value);
-            moveIsMade = true;
-        }
     }
 }

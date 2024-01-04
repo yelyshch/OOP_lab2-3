@@ -10,11 +10,11 @@ Monster::Monster() noexcept : Character() {
     setProtection(1);
     setDamage(1);
     setHealth(3);
-    state = nullptr;
+    state = new SlowMoveMonster();
     attackCounter = 0;
 }
 
-Monster::Monster(State* st) : state(nullptr) {
+Monster::Monster(State* st){
     setMonsterState(st);
 }
 

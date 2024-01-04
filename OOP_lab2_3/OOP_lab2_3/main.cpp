@@ -75,7 +75,6 @@ void TestGame(Manager mainManager) {
     cout << endl;
 
 
-
     //Round Phase:
     while (mainManager.gameField->monster->getHealth() > 0 || mainManager.gameField->hero->getHealth() > 0) {
         int deltaX = mainManager.gameField->hero->getPosition().x - mainManager.gameField->monster->getPosition().x;
@@ -89,7 +88,6 @@ void TestGame(Manager mainManager) {
             switch (choice) {
             case 0:
                 mainManager.gameField->hero->attack(*mainManager.gameField->monster, mainManager.gameField);
-                //дописати віднімання attackCounter монстра, коли герой його б'є
                 break;
             case 1:
                 Position newPosition;
@@ -133,7 +131,6 @@ void TestGame(Manager mainManager) {
 
         mainManager.gameField->monster->activityInGame(*mainManager.gameField->monster, *mainManager.gameField->hero, mainManager.gameField);
     }
-
 }
 
 int main() {
@@ -141,6 +138,8 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     Manager mainManager;
+
+    
     TestGame(mainManager);
     return 0;
 }
