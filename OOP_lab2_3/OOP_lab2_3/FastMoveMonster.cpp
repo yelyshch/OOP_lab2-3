@@ -10,6 +10,7 @@ void FastMoveMonster::stateDetermination(int counter, Monster& monster, Hero& he
 	{
 		NormalMoveMonster nextstate;
 		nextstate.stateDetermination(counter, monster, hero, gameField);
+		this->monster = &monster;
 		previousState();
 	}
 	else { moveTowardsHero(monster, hero, gameField); }
@@ -19,7 +20,7 @@ void FastMoveMonster::previousState() {
 	monster->setMonsterState(new NormalMoveMonster());
 }
 
-void FastMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameField){
+void FastMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameField) {
 	bool moveIsMade = false;
 	int deltaX = monster.getPosition().x - hero.getPosition().x;
 	int deltaY = monster.getPosition().y - hero.getPosition().y;
@@ -31,8 +32,9 @@ void FastMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
 			if (gameField->freeCell(value)) {
 				gameField->eraseContent(monster.getPosition()); // erase the cell
 				monster.setPosition(value);
-
 				gameField->moveHero(value);
+
+				monster.setAttackCounter(monster.getAttackCounter() + 1);
 				moveIsMade = true;
 			}
 		}
@@ -41,20 +43,22 @@ void FastMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
 			if (gameField->freeCell(value)) {
 				gameField->eraseContent(monster.getPosition()); // erase the cell
 				monster.setPosition(value);
-
 				gameField->moveHero(value);
+
+				monster.setAttackCounter(monster.getAttackCounter() + 1);
 				moveIsMade = true;
 			}
 		}
 		else {
 			if ((std::abs(deltaX) >= 2) || (std::abs(deltaY) >= 2)) {
 				value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0),
-									 monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
+					monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
 				if (gameField->freeCell(value)) {
 					gameField->eraseContent(monster.getPosition()); // erase the cell
 					monster.setPosition(value);
-
 					gameField->moveHero(value);
+
+					monster.setAttackCounter(monster.getAttackCounter() + 1);
 					moveIsMade = true;
 				}
 			}
@@ -65,8 +69,9 @@ void FastMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
 				if (gameField->freeCell(value)) {
 					gameField->eraseContent(monster.getPosition()); // erase the cell
 					monster.setPosition(value);
-
 					gameField->moveHero(value);
+
+					monster.setAttackCounter(monster.getAttackCounter() + 1);
 					moveIsMade = true;
 				}
 				else if (deltaY != 0) {
@@ -75,8 +80,9 @@ void FastMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
 					if (gameField->freeCell(value)) {
 						gameField->eraseContent(monster.getPosition()); // erase the cell
 						monster.setPosition(value);
-
 						gameField->moveHero(value);
+
+						monster.setAttackCounter(monster.getAttackCounter() + 1);
 						moveIsMade = true;
 					}
 				}

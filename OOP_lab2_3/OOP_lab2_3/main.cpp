@@ -13,7 +13,7 @@ using std::cin;
 using std::endl;
 using std::setw;
 
-const int FIELD_SIZE = 5;
+const int FIELD_SIZE = 10;
 
 void PrintField(Field* field) {
     for (int i = 0; i < FIELD_SIZE; i++) {
@@ -51,6 +51,7 @@ bool setTypeHero() {
 
 void TestGame(Manager mainManager) {
     //Start game: creation and generation.
+    Monster monster;
 
     //Field
     mainManager.createField(FIELD_SIZE, FIELD_SIZE, 1, 1, setTypeHero());
@@ -124,23 +125,29 @@ void TestGame(Manager mainManager) {
             }
 
         }
+
+        mainManager.gameField->monster->activityInGame(*mainManager.gameField->monster, *mainManager.gameField->hero, mainManager.gameField);
+
+        cout << endl << endl;
         PrintField(mainManager.gameField);
 
         displayHero("\nHero status", mainManager.gameField->hero);
         displayMonster("Monster status", mainManager.gameField->monster);
 
-        mainManager.gameField->monster->activityInGame(*mainManager.gameField->monster, *mainManager.gameField->hero, mainManager.gameField);
+        cout << endl << endl << endl << mainManager.gameField->monster->getAttackCounter() << endl << endl << endl;
 
         if (mainManager.gameField->monster->getHealth() == 0) {
             cout << endl << "VICTORY!" << endl << "Game over";
             end = true;
         }
-        else if (mainManager.gameField->hero->getHealth() == 0) {
+        if (mainManager.gameField->hero->getHealth() == 0) {
             cout << "DEFEAT!" << endl << "Game over";
             end = true;
         }
     }
 }
+
+//mainManager.gameField->monster->activityInGame(*mainManager.gameField->monster, *mainManager.gameField->hero, mainManager.gameField);
 
 int main() {
     srand(static_cast<unsigned int>(time(NULL)));

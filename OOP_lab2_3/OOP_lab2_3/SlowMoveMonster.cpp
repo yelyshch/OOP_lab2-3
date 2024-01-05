@@ -6,12 +6,13 @@
 #include <cmath>
 
 void SlowMoveMonster::stateDetermination(int counter, Monster& monster, Hero& hero, Field* gameField) {
-    if (counter > 2) { 
+    if (counter > 2) {
         NormalMoveMonster nextstate;
         nextstate.stateDetermination(counter, monster, hero, gameField);
-        nextState(); 
+        this->monster = &monster;
+        nextState();
     }
-    else if (counter < 2 && counter > 0) { moveTowardsHero(monster, hero, gameField); }
+    else if (counter < 3 && counter >= 0) { moveTowardsHero(monster, hero, gameField); }
 }
 
 void SlowMoveMonster::nextState() {
@@ -21,7 +22,6 @@ void SlowMoveMonster::nextState() {
 void SlowMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameField)
 {
     bool moveIsMade = false;
-    //Пізніше - передавати ці значення
     int deltaX = monster.getPosition().x - hero.getPosition().x;
     int deltaY = monster.getPosition().y - hero.getPosition().y;
 
@@ -31,6 +31,15 @@ void SlowMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
         if (deltaX != 0) {
             //Ходимо по X
             value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0), monster.getPosition().y);
+            if (gameField->freeCell(value)) {
+                gameField->eraseContent(monster.getPosition()); // erase the cell
+                monster.setPosition(value);
+                gameField->moveHero(value);
+
+                monster.setAttackCounter(monster.getAttackCounter() + 1);
+                moveIsMade = true;
+            }
+            else ++deltaX; // TODO: Remove
         }
         else if (deltaY != 0) {
             // Якщо рух по X неможливий, але можна по Y
@@ -38,18 +47,14 @@ void SlowMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gameF
             if (gameField->freeCell(value)) {
                 gameField->eraseContent(monster.getPosition()); // erase the cell
                 monster.setPosition(value);
-
                 gameField->moveHero(value);
+
+                monster.setAttackCounter(monster.getAttackCounter() + 1);
                 moveIsMade = true;
             }
-        }
-        if (gameField->freeCell(value)) {
-            gameField->eraseContent(monster.getPosition()); // erase the cell
-            monster.setPosition(value);
-
-            gameField->moveHero(value);
-            moveIsMade = true;
+            else ++deltaY; // TODO: Remove
         }
 
     }
 }
+

@@ -11,7 +11,7 @@ Monster::Monster() noexcept : Character() {
     setProtection(1);
     setDamage(1);
     setHealth(7);
-    state = nullptr;
+    state = new SlowMoveMonster();
     attackCounter = 0;
 }
 
@@ -19,10 +19,14 @@ Monster::Monster(State* st){
     setMonsterState(st);
 }
 
-State* Monster::getMonsterState() { return state; }
-int Monster::getAttackCounter() { return attackCounter; }
+Monster::~Monster() {
+    if (state != nullptr) {
+        delete state;
+    }
+}
 
-void Monster::getAttackCounter(int value) { attackCounter = value; }
+State* Monster::getMonsterState() { return state; }
+
 void Monster::setMonsterState(State* newState) {
     if (state != nullptr) { delete state; }
     state = newState;
@@ -37,6 +41,8 @@ void Monster::previousState() {
     state->previousState();
 }
 
+int Monster::getAttackCounter() { return attackCounter; }
+void Monster::setAttackCounter(int value) { attackCounter = value; }
 
 void Monster::activityInGame(Monster& monster, Hero& hero, Field* gameField) {
     int deltaX = monster.getPosition().x - hero.getPosition().x;
@@ -45,15 +51,8 @@ void Monster::activityInGame(Monster& monster, Hero& hero, Field* gameField) {
     if (std::abs(deltaX) <= 1 && std::abs(deltaY) <= 1) { 
         monster.calculateMonsterAttack(hero, monster);
     }
-    else if (attackCounter == 0) {
-        state = new SlowMoveMonster();
-        attackCounter++;
-        state->stateDetermination(attackCounter, monster, hero, gameField);
-    }
     else {
-        attackCounter++;
         state->stateDetermination(attackCounter, monster, hero, gameField);
-        std::cout << std::endl << "1" << std::endl;
     }
 }
 
@@ -61,30 +60,18 @@ void Monster::activityInGame(Monster& monster, Hero& hero, Field* gameField) {
 void Monster::calculateMonsterAttack(Hero& hero, Monster& monster) {
     int monsterDistance = std::max(std::abs(hero.getPosition().x - monster.getPosition().x), std::abs(hero.getPosition().y - monster.getPosition().y));
 
-    int totalAttack;
     if (monster.getHealth() > 0) {
-        if (monsterDistance <= hero.getDistance()) {
-            totalAttack = monster.getDamage();
+        int totalAttack = (monsterDistance <= hero.getDistance()) ? monster.getDamage() : 0;
+        int heroDefense = hero.getProtection();
+        int damage = (totalAttack > heroDefense) ? (totalAttack - heroDefense) : 0;
+
+        if (damage > 0) {
+            hero.reduceHealth(damage);
         }
         else {
-            totalAttack = 0;
+            hero.setProtection(getProtection() - 1);
         }
     }
-    else {
-        return;
-    }
-
-    int heroDefense = hero.getProtection();
-    int damage;
-
-    if (totalAttack > heroDefense) {
-        damage = totalAttack - heroDefense;
-    }
-    else {
-        damage = 0;
-    }
-
-    hero.reduceHealth(damage);
 }
 
 void Monster::diceResults() {

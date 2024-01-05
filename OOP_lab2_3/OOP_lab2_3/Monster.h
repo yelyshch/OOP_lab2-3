@@ -11,9 +11,10 @@ public:
     int numberOfMoving;
     Monster() noexcept;
     Monster(State* st);
+    ~Monster();
     State* getMonsterState();
     int getAttackCounter();
-    void getAttackCounter(int value);
+    void setAttackCounter(int value);
     void setMonsterState(State* newState);
     void nextState();
     void previousState();

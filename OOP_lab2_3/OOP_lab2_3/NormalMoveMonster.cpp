@@ -10,12 +10,14 @@ void NormalMoveMonster::stateDetermination(int counter, Monster& monster, Hero& 
     {
         SlowMoveMonster nextstate;
         nextstate.stateDetermination(counter, monster, hero, gameField);
+        this->monster = &monster;
         previousState();
     }
     else if (counter > 6)
     {
         FastMoveMonster nextstate;
         nextstate.stateDetermination(counter, monster, hero, gameField);
+        this->monster = &monster;
         nextState();
     }
     else { moveTowardsHero(monster, hero, gameField); }
@@ -39,10 +41,10 @@ void NormalMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gam
         Position value;
 
         // Діагональний рух, пріоритетний
-        
+
         if (std::abs(deltaX) >= 2 && std::abs(deltaY) >= 2) {
             value.setCoordinates(monster.getPosition().x + ((deltaX > 1) ? -1 : (deltaX < -1) ? 1 : 0),
-                                 monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
+                monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
             if (gameField->freeCell(value)) {
                 gameField->eraseContent(monster.getPosition()); // erase the cell
                 monster.setPosition(value);
@@ -58,19 +60,23 @@ void NormalMoveMonster::moveTowardsHero(Monster& monster, Hero& hero, Field* gam
             if (gameField->freeCell(value)) {
                 gameField->eraseContent(monster.getPosition()); // erase the cell
                 monster.setPosition(value);
-
                 gameField->moveHero(value);
+
+                monster.setAttackCounter(monster.getAttackCounter() + 1);
                 moveIsMade = true;
             }
             else if (deltaY != 0) {
                 // Якщо рух по X неможливий, але можна по Y
                 value.setCoordinates(monster.getPosition().x, monster.getPosition().y + ((deltaY > 1) ? -1 : (deltaY < -1) ? 1 : 0));
                 if (gameField->freeCell(value)) {
+                    gameField->eraseContent(monster.getPosition()); // erase the cell
                     monster.setPosition(value);
+                    gameField->moveHero(value);
+
+                    monster.setAttackCounter(monster.getAttackCounter() + 1);
+                    moveIsMade = true;
                 }
             }
         }
-
-        // Перевірка доступності нової позиції
     }
 }
