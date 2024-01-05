@@ -13,7 +13,7 @@ using std::cin;
 using std::endl;
 using std::setw;
 
-const int FIELD_SIZE = 10;
+const int FIELD_SIZE = 15;
 
 void PrintField(Field* field) {
     for (int i = 0; i < FIELD_SIZE; i++) {

@@ -49,6 +49,13 @@ void Archer::attack(Monster& target, Field* gameField) {
 
     // Apply damage to the monster
     target.setHealth(std::max(0, target.getHealth() - totalDamage));
+    
+    if (target.getAttackCounter() > 2) {
+        target.setAttackCounter(target.getAttackCounter() - 2);
+        if (target.getAttackCounter() < 0) {
+            target.setAttackCounter(0);
+        }
+    }
 
     if (target.getHealth() <= 0) {
         target.setHealth(0);

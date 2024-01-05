@@ -79,6 +79,13 @@ void Swordsman::attack(Monster& target, Field* gameField) {
     // Apply damage to the monster
     target.setHealth(std::max(0, target.getHealth() - totalDamage));
 
+    if (target.getAttackCounter() > 2) {
+        target.setAttackCounter(target.getAttackCounter() - 3);
+        if (target.getAttackCounter() < 0) {
+            target.setAttackCounter(0);
+        }
+    }
+
     // Check if the monster is defeated
     if (target.getHealth() <= 0) {
         target.setHealth(0);
