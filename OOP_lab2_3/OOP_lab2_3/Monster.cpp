@@ -62,14 +62,13 @@ void Monster::calculateMonsterAttack(Hero& hero, Monster& monster) {
 
     if (monster.getHealth() > 0) {
         int totalAttack = (monsterDistance <= hero.getDistance()) ? monster.getDamage() : 0;
-        int heroDefense = hero.getProtection();
-        int damage = (totalAttack > heroDefense) ? (totalAttack - heroDefense) : 0;
+        int damage = (totalAttack > hero.getProtection()) ? (totalAttack - hero.getProtection()) : 0;
 
         if (damage > 0) {
             hero.reduceHealth(damage);
         }
         else {
-            hero.setProtection(getProtection() - 1);
+            hero.setProtection(hero.getProtection() - std::ceil(getDamage()/3));
         }
     }
 }
