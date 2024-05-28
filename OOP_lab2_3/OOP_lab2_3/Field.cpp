@@ -33,6 +33,23 @@ bool Field::isCellFreeAroundHero(Position unutPosition) const {
     return true;
 }
 
+bool Field::isCellFreeForObstacle(Position unutPosition) const {
+    for (int dx = -1; dx <= 1; ++dx) {
+        for (int dy = -1; dy <= 1; ++dy) {
+            Position value;
+            value.x = unutPosition.x + dx;
+            value.y = unutPosition.y + dy;
+
+            if (dx != 0 && dy != 0) { // Check diagonal cells
+                if (isWithinBounds(value) && cells[value.y][value.x].hasObstacle()) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 bool Field::freeCell(Position newXY) const {
     return isWithinBounds(newXY) && !cells[newXY.y][newXY.x].hasObstacle() && !cells[newXY.y][newXY.x].hasUnitPresent();
 }
@@ -51,7 +68,7 @@ void Field::placeObstacles(int obstacleCount) {
         do {
             value.x = rand() % width;
             value.y = rand() % height;
-        } while (!isCellFreeAroundHero(value));
+        } while (!isCellFreeAroundHero(value) || !isCellFreeForObstacle(value));
         cells[value.y][value.x].setObstacle(true);
     }
 }

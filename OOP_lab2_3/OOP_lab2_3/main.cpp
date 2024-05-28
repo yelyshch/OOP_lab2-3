@@ -13,7 +13,7 @@ using std::cin;
 using std::endl;
 using std::setw;
 
-const int FIELD_SIZE = 5;
+const int FIELD_SIZE = 6;
 
 void PrintField(Field* field) {
     for (int i = 0; i < FIELD_SIZE; i++) {
@@ -52,7 +52,7 @@ bool setTypeHero() {
 void TestGame(Manager mainManager) {
     //Start game: creation and generation.
     //Field
-    mainManager.createField(FIELD_SIZE, FIELD_SIZE, 1, 1, setTypeHero());
+    mainManager.createField(FIELD_SIZE, FIELD_SIZE, 4, 1, setTypeHero());
     cout << "Current level = " << mainManager.CurrentLevel << endl << endl;
     PrintField(mainManager.gameField);
     
@@ -94,17 +94,19 @@ void TestGame(Manager mainManager) {
                 Position newPosition;
                 short int x;
                 short int y;
-                cout << "Enter the values ​​of the new coordinates:" << endl << "x: ";
+                cout << "Enter the values of the new coordinates:" << endl << "x: ";
                 cin >> x;
                 cout << "y: ";
                 cin >> y;
                 newPosition.setCoordinates(x, y);
                 mainManager.gameField->hero->move(newPosition, mainManager.gameField);
                 break;
+
+                cout << endl << endl;
+                PrintField(mainManager.gameField);
             default:
                 break;
             }
-
         }
         else {
             cout << "Enter the number to perform the desired action: 0 - miss, 1 - move:";
@@ -123,6 +125,8 @@ void TestGame(Manager mainManager) {
             }
 
         }
+
+        cout << endl << "yes" << endl;
 
         mainManager.gameField->monster->activityInGame(*mainManager.gameField->monster, *mainManager.gameField->hero, mainManager.gameField);
 
@@ -151,7 +155,7 @@ int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     Manager mainManager;
-    
+
     TestGame(mainManager);
     return 0;
 }

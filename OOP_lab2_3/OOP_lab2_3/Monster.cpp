@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Position.h"
 #include "Hero.h"
 #include "Monster.h"
 #include "State.h"
@@ -6,6 +7,7 @@
 #include "FastMoveMonster.h"
 #include "SlowMoveMonster.h"
 #include <cmath>
+
 
 Monster::Monster() noexcept : Character() {
     setProtection(1);
@@ -48,12 +50,8 @@ void Monster::activityInGame(Monster& monster, Hero& hero, Field* gameField) {
     int deltaX = monster.getPosition().x - hero.getPosition().x;
     int deltaY = monster.getPosition().y - hero.getPosition().y;
 
-    if (std::abs(deltaX) <= 1 && std::abs(deltaY) <= 1) { 
-        monster.calculateMonsterAttack(hero, monster);
-    }
-    else {
-        state->stateDetermination(attackCounter, monster, hero, gameField);
-    }
+    if (std::abs(deltaX) <= 1 && std::abs(deltaY) <= 1) { monster.calculateMonsterAttack(hero, monster); }
+    else { state->stateDetermination(attackCounter, monster, hero, gameField); }
 }
 
 

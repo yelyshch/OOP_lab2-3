@@ -9,8 +9,6 @@ void State::nextState() {}
 
 void State::previousState() {}
 
-//void State::moveTowardsHero(Monster& monster, Hero& hero, Field* gameField) {}
-
 void State::stateDetermination(int counter, Monster& monster, Hero& hero, Field* gameField) {}
 
 State::~State() {}

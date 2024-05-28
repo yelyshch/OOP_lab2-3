@@ -5,9 +5,6 @@
 #include "Position.h"
 #include <array>
 
-
-//Character
-
 Character::Character() {
     health = 1;
     protection = 1;

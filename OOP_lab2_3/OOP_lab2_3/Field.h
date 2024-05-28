@@ -9,6 +9,7 @@ private:
     int width;
     int height;
     bool isCellFreeAroundHero(Position unutPosition) const;
+    bool isCellFreeForObstacle(Position unutPosition) const;
 
     //friend void PrintField(Field*);
 

@@ -10,8 +10,6 @@
 class Manager;
 class Monster;
 
-const int maxHP = 10;
-
 class Field;
 
 class Character {
